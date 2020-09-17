@@ -1,8 +1,12 @@
-package com.springbook.biz.polymorphism;
+package polymorphism;
 
 public class TvTest {
+	
 	public static void main(String[] args) {
-		SamsungTV tv = new SamsungTV();
+		BeanFactory bean = new BeanFactory();
+		
+		Tv tv = (Tv)bean.getBean(args[0]);
+		
 		tv.powerOn();
 		tv.volumeUp();
 		tv.volumeDown();
