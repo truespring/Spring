@@ -22,7 +22,7 @@ VO - insert, update, delete 용 <br>
 CRUD<br>
 (Java, DB)<br>
 ins<br>
-sel_ / sel_LIst<br>
+sel_ / sel_List<br>
 upd<br>
 del<br>
 
