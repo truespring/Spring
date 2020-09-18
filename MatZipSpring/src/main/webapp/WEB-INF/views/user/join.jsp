@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 <div id="sectionContainerCenter">
 	<div>
-		<form action="joinProc" method="post" id="frm" class="frm">
+		<div class="msg">${msg}</div>
+		<form action="join" method="post" id="frm" class="frm">
 			<div id="idChkResult" class="msg"></div>
-			<div id="idChkResult1" class="msg"></div>
 			<div><input type="text" name="user_id" placeholder="아이디">
 				<button type="button" onclick="chkId()">아이디 중복 체크</button>
 			</div>
