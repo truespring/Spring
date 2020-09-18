@@ -10,8 +10,8 @@ IoC (Inversion of Control) : 제어의 역행<br>
 명사 앞, 동사 뒤<br>
 클래스명 파스칼, 메소드명, 변수명(DB 관련X)<br>
 카멜 케이스 기법 사용<br>
-사용자 정의 메소드명 앞에는 _(언더바) 붙인다<br>
-VO 변수명 단어 구분은 _(언더바) <br><br>
+사용자 정의 메소드명 앞에는 `_`(언더바) 붙인다<br>
+VO 변수명 단어 구분은 `_`(언더바) <br><br>
 MODEL<br>
 DMI(Domain) - select 결과용<br>
 DTO - select parameter 용<br>
