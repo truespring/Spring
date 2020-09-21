@@ -31,8 +31,8 @@
 				<div class="ml15" id="headerLogout"><a href="/user/logout">로그아웃</a></div>
 			</div>
 			<div id="headerRight">
-				<a href="/restaurant/restMap"><span class="material-icons" id="icon">map</span></a>
-			 	<a class="ml15" href="/restaurant/restReg"><span class="material-icons" id="icon">add_circle_outline</span></a>
+				<a href="/rest/map"><span class="material-icons" id="icon">map</span></a>
+			 	<a class="ml15" href="/rest/restReg"><span class="material-icons" id="icon">add_circle_outline</span></a>
 			 	<a class="ml15 mr15" href="/user/restFavorite"><span class="material-icons" id="icon">favorite</span></a>
 			</div>
 		</header>

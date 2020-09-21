@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div id="sectionContainerCenter">
 	<div>
-		<form action="/restaurant/restRegProc" method="post" id="frm" onsubmit="return chkFrm()">
+		<form action="/rest/restReg" method="post" id="frm" onsubmit="return chkFrm()">
 			<div><input type="text" name="nm" placeholder="가계명"></div>
 			<div>
 				<input type="text" name="addr" placeholder="주소" onkeyup="changeAddr()" style="width:400px;">
