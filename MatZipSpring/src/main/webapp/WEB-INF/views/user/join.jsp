@@ -21,16 +21,13 @@
 	function chkId() {												
 		const user_id = frm.user_id.value									
 		var text;									
-		axios.get('/user/ajaxIdChk', {									
-			params: {								
-				'user_id': user_id	
-			}								
+		axios.post('/user/ajaxIdChk', {					
+				user_id: user_id								
 		}).then(function(res) {									
-			console.log(res)								
-			console.log(res.data.result)								
-			if(res.data.result == 2) { // 아이디 사용 가능								
+			console.log(res)											
+			if(res.data == 2) { // 아이디 사용 가능								
 				idChkResult.innerText = '사용 가능한 아이디 입니다.'							
-			} else if(res.data.result == 3) { // 아이디 중복 됨								
+			} else if(res.data == 3) { // 아이디 중복 됨								
 				idChkResult.innerText = '중복된 아이디 입니다.'							
 			}								
 		})									
