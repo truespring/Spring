@@ -16,7 +16,7 @@
 				<select name="cd_category">
 					<option value="0">---선택---</option>
 					<c:forEach items="${categoryList}" var="item">
-						<option value="${item.cd}">${item.val}</option>
+						<option value="${item.cd}"> ${item.val}</option>
 					</c:forEach>
 				</select>
 			</div>

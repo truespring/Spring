@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreait.matzip.Const;
+import com.koreait.matzip.SecurityUtils;
 import com.koreait.matzip.ViewRef;
 import com.koreait.matzip.rest.model.RestPARAM;
 import com.koreait.matzip.rest.model.RestVO;
-import com.koreait.matzip.user.model.UserVO;
 
 @Controller
 @RequestMapping("/rest")
@@ -31,15 +31,15 @@ public class RestController {
 	
 	@RequestMapping(value = "/restReg", method = RequestMethod.GET)
 	public String restReg(Model model) {
+		model.addAttribute("categoryList", service.selCategoryList());
 		model.addAttribute(Const.TITLE, "식당 등록");
 		model.addAttribute(Const.VIEW, "rest/restReg");
 		return ViewRef.TEMP_MENU_TEMP;
 	}
 	
 	@RequestMapping(value = "/restReg", method = RequestMethod.POST)
-	public String restReg(RestVO param, HttpSession hs, UserVO vo) {
-		hs.setAttribute(Const.LOGIN_USER, vo);
-		param.setI_user();
+	public String restReg(RestPARAM param, HttpSession hs) {		
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));
 		int result = service.insRest(param);
 		
 		return "redirect:/rest/restReg";
