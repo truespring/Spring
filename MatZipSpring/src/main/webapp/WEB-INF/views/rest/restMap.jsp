@@ -88,7 +88,7 @@
 		}
 		
 		function moveToDetail(i_rest) {
-			location.href = '/restaurant/restDetail?i_rest=' + i_rest
+			location.href = '/rest/detail?i_rest=' + i_rest
 		}
 		
 		function addEvent(target, type, callback) {

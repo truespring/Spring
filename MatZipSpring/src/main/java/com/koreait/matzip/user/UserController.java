@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.koreait.matzip.Const;
@@ -23,9 +24,24 @@ public class UserController {
 	
 	@Autowired // 자동으로 주소값을 넣어줄 때 사용
 	private UserService service;
+	/*
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(Model model) {
+		model.addAttribute(Const.TITLE, "로그인");
+		model.addAttribute(Const.VIEW, "user/login");
+		return ViewRef.TEMP_DEFAULT;
+	}
+	*/
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpSession hs) {
+		hs.invalidate(); // 세션에 있는 정보를 초기화 시킨다.
+		return "redirect:/";
+	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(Model model) {
+		System.out.println("Controller - login");
 		model.addAttribute(Const.TITLE, "로그인");
 		model.addAttribute(Const.VIEW, "user/login");
 		return ViewRef.TEMP_DEFAULT;
