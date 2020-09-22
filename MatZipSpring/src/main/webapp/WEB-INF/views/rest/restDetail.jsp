@@ -13,8 +13,8 @@
 					</span>
 				</div>
 				<div class='status branch_none'>
-					<span class="cnt hit">${data.cntHits }</span>
-					<span class="cnt favorite">${data.cntFavorite }</span>
+					<span class="cnt hit">${data.hits }</span>
+					<span class="cnt favorite">${data.cnt_favorite }</span>
 				</div>
 			</div>
 			<div>
@@ -28,6 +28,10 @@
 						<tr>
 							<th>카테고리</th>
 							<td>${data.cd_category_nm }</td>
+						</tr>
+						<tr>
+							<th>작성자</th>
+							<td>${data.user_nm }</td>
 						</tr>
 						<tr>
 							<th>메뉴</th>
@@ -58,7 +62,7 @@
 			<h2>--추천 메뉴--</h2>
 			<div>
 				<button onclick="isDel()">삭제</button>
-				<form id="recFrm" action="/restaurant/addRecMenusProc" enctype="multipart/form-data" method="post">
+				<form id="recFrm" action="/rest/addRecMenusProc" enctype="multipart/form-data" method="post">
 					<div><button type="button" onclick="addRecMenu()">메뉴 추가</button></div>
 					<input type="hidden" name="i_rest" value="${data.i_rest}">
 					<div id="recItem"></div>
@@ -67,7 +71,7 @@
 			</div>
 			<h2>--메뉴--</h2>
 			<div>
-				<form id="menuFrm" action="/restaurant/addMenusProc" enctype="multipart/form-data" method="post">
+				<form id="menuFrm" action="/rest/addMenusProc" enctype="multipart/form-data" method="post">
 					<input type="hidden" name="i_rest" value="${data.i_rest}">
 					<input type="file" name="menu_pic" multiple>
 					<div><input type='submit' value="등록"></div>
@@ -103,7 +107,7 @@
 			if(!confirm('삭제하시겠습니까?')) {
 				return
 			}
-			axios.get('/restaurant/ajaxDelRecMenu', {
+			axios.get('/rest/ajaxDelRecMenu', {
 				params: {
 					i_rest, seq
 				}
@@ -143,7 +147,7 @@
 	
 		function isDel() {
 			if(confirm('삭제 하시겠습니까?')) {
-				location.href = '/restaurant/restDel?i_rest=${data.i_rest}'
+				location.href = '/rest/restDel?i_rest=${data.i_rest}'
 			}
 		}
 	</script>

@@ -55,4 +55,13 @@ public class RestController {
 		System.out.println("ne_lng : " + param.getNe_lng());
 		return service.selRestList(param);
 	}
+	
+	@RequestMapping(value = "/detail")
+	public String detail(RestPARAM param, Model model) {
+		RestDMI data = service.selRest(param);
+		model.addAttribute(Const.TITLE, data.getNm());
+		model.addAttribute(Const.VIEW, "rest/restDetail");
+		model.addAttribute("data", data);
+		return ViewRef.TEMP_MENU_TEMP;
+	}
 }

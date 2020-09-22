@@ -35,4 +35,8 @@ public class RestService {
 	public int insRest(RestPARAM param) {
 		return mapper.insRest(param);
 	}
+	
+	public RestDMI selRest(RestPARAM param) {
+		return mapper.selRest(param);
+	}
 }
