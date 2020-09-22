@@ -12,6 +12,7 @@
 	<div id="mapContainer" style="width:100%;height:100%;"></div>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
+		var markerList = [] // 마커 리스트
 	
 		const options = { //지도를 생성할 때 필요한 기본 옵션
 			center: new kakao.maps.LatLng(35.8641294, 128.5942331), //지도의 중심좌표.
@@ -21,6 +22,11 @@
 		const map = new kakao.maps.Map(mapContainer, options); //지도 생성 및 객체 리턴
 		
 		function getRestaurantList() {
+			// 마커 모두 지우기
+			markerList.forEach(function(marker) {
+				marker.setMap(null)
+			})
+			
 			const bounds = map.getBounds()
 			const southWest = bounds.getSouthWest()
 			const northEast = bounds.getNorthEast()
@@ -46,7 +52,7 @@
 			})
 		}
 		
-		kakao.maps.event.addListener(map, 'dragend', getRestaurantList)
+		kakao.maps.event.addListener(map, 'tilesloaded', getRestaurantList)
 
 		function createMarker(item) {
 			var content = document.createElement('div')
@@ -77,6 +83,8 @@
 				moveToDetail(item.i_rest)
 			})
 			marker.setMap(map)
+			
+			markerList.push(marker)
 		}
 		
 		function moveToDetail(i_rest) {
