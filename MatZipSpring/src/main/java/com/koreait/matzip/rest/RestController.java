@@ -10,12 +10,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.koreait.matzip.Const;
 import com.koreait.matzip.SecurityUtils;
 import com.koreait.matzip.ViewRef;
 import com.koreait.matzip.rest.model.RestDMI;
 import com.koreait.matzip.rest.model.RestPARAM;
+import com.koreait.matzip.rest.model.RestRecMenuVO;
 
 @Controller
 @RequestMapping("/rest")
@@ -59,9 +62,13 @@ public class RestController {
 	@RequestMapping(value = "/detail")
 	public String detail(RestPARAM param, Model model) {
 		RestDMI data = service.selRest(param);
+//		List<RestRecMenuVO> selRestRecMenus = service.selRestRecMenus(param);
 		model.addAttribute(Const.TITLE, data.getNm());
 		model.addAttribute(Const.VIEW, "rest/restDetail");
+		model.addAttribute("css", new String[] {"restaurant"});
 		model.addAttribute("data", data);
+//		model.addAttribute("recMenuList", selRestRecMenus);
+		model.addAttribute("recMenuList", service.selRestRecMenus(param));
 		return ViewRef.TEMP_MENU_TEMP;
 	}
 	
@@ -76,5 +83,22 @@ public class RestController {
 		}
 		System.out.println("result : " + result);
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "/recMenus", method = RequestMethod.POST)
+	public String recMenus(MultipartHttpServletRequest mReq, RedirectAttributes ra) {
+		System.out.println("/recMenus");
+		int i_rest = service.insRecMenus(mReq);
+		
+		ra.addAttribute("i_rest", i_rest);
+		return "redirect:/rest/detail";
+	}
+	
+	@RequestMapping("/ajaxDelRecMenu")
+	@ResponseBody public int ajaxDelRecMenu(RestPARAM param, HttpSession hs) {
+		String path = "/resources/img/rest/" + param.getI_rest() + "/rec_menu/";
+		String realPath = hs.getServletContext().getRealPath(path);
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		return service.delRecMenu(param, realPath);
 	}
 }

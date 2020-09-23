@@ -40,7 +40,7 @@
 									<c:if test="${fn:length(menuList) > 0}">
 										<c:forEach var="i" begin="0" end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
 											<div class="menuItem">
-												<img src="/res/img/restaurant/${data.i_rest}/menu/${menuList[i].menu_pic}">
+												<img src="/res/img/rest/${data.i_rest}/menu/${menuList[i].menu_pic}">
 											</div>
 										</c:forEach>
 										<c:if test="${fn:length(menuList) > 3}">
@@ -60,10 +60,10 @@
 		</div>
 		<c:if test="${loginUser.i_user == data.i_user }">
 			<button onclick="isDel()">삭제</button>
-			<h2>--추천 메뉴--</h2>
+			<h2>- 추천 메뉴 -</h2>
 			<div>
-				<form id="recFrm" action="/rest/addRecMenusProc" enctype="multipart/form-data" method="post">
-					<div><button type="button" onclick="addRecMenu()">메뉴 추가</button></div>
+				<div><button type="button" onclick="addRecMenu()">추천 메뉴 추가</button></div>
+				<form id="recFrm" action="/rest/recMenus" enctype="multipart/form-data" method="post">
 					<input type="hidden" name="i_rest" value="${data.i_rest}">
 					<div id="recItem"></div>
 					<div><input type="submit" value="등록"></div>
@@ -71,7 +71,7 @@
 			</div>
 			<h2>--메뉴--</h2>
 			<div>
-				<form id="menuFrm" action="/rest/addMenusProc" enctype="multipart/form-data" method="post">
+				<form id="menuFrm" action="/rest/addMenus" enctype="multipart/form-data" method="post">
 					<input type="hidden" name="i_rest" value="${data.i_rest}">
 					<input type="file" name="menu_pic" multiple>
 					<div><input type='submit' value="등록"></div>
@@ -79,11 +79,11 @@
 			</div>
 		</c:if>
 		<div class="recMenuContainer">
-			<c:forEach items="${recommendMenuList}" var="item">
+			<c:forEach items="${recMenuList}" var="item">
 				<div class="recMenuItem" id="recMenuItem_${item.seq}">
 					<div class="pic">
 						<c:if test="${item.menu_pic != null and item.menu_pic != ''}">
-							<img src="/res/img/restaurant/${data.i_rest}/${item.menu_pic}">
+							<img src="/res/img/rest/${data.i_rest}/rec_menu/${item.menu_pic}">
 						</c:if>
 					</div>
 					<div class="info">
@@ -91,7 +91,7 @@
 						<div class="price"><fmt:formatNumber type="number" value="${item.menu_price}"/>원</div>
 					</div>
 					<c:if test="${loginUser.i_user == data.i_user}">
-						<div class="delIconContainer" onclick="delRecMenu(${data.i_rest}, ${item.seq})">
+						<div class="delIconContainer" onclick="delRecMenu(${item.seq})">
 							<span class="material-icons">clear</span>
 						</div>
 					</c:if>
@@ -107,9 +107,12 @@
 			if(!confirm('삭제하시겠습니까?')) {
 				return
 			}
+			console.log('seq : ' seq)
+			
 			axios.get('/rest/ajaxDelRecMenu', {
 				params: {
-					i_rest, seq
+					i_rest: ${data.i_rest},
+					seq: seq
 				}
 			}).then(function(res) {
 				if(res.data == 1) {
@@ -132,7 +135,7 @@
 			inputPrice.setAttribute('name', 'menu_price')
 			var inputpic = document.createElement('input')
 			inputpic.setAttribute("type", "file")
-			inputpic.setAttribute('name', 'menu_pic_' + idx++)
+			inputpic.setAttribute('name', 'menu_pic')
 			
 			div.append('메뉴 : ')
 			div.append(inputNm)
