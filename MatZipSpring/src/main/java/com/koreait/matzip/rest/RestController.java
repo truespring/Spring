@@ -44,7 +44,7 @@ public class RestController {
 		param.setI_user(SecurityUtils.getLoginUserPK(hs));
 		int result = service.insRest(param);
 		
-		return "redirect:/rest/restReg";
+		return "redirect:/";
 	}	
 	
 	@RequestMapping(value = "/ajaxGetList", produces = {"application/json; charset=UTF-8"})
@@ -63,5 +63,18 @@ public class RestController {
 		model.addAttribute(Const.VIEW, "rest/restDetail");
 		model.addAttribute("data", data);
 		return ViewRef.TEMP_MENU_TEMP;
+	}
+	
+	@RequestMapping(value = "/del")
+	public String del(RestPARAM param, HttpSession hs, Model model) {
+		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		int result = 1;
+		try { // 트라이 캐치문이 없다면 쿼리문이 노출될 수 있다.
+			service.delRestTran(param);
+		} catch(Exception e) {
+			result = 0;
+		}
+		System.out.println("result : " + result);
+		return "redirect:/";
 	}
 }

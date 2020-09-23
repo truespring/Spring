@@ -59,9 +59,9 @@
 			</div>
 		</div>
 		<c:if test="${loginUser.i_user == data.i_user }">
+			<button onclick="isDel()">삭제</button>
 			<h2>--추천 메뉴--</h2>
 			<div>
-				<button onclick="isDel()">삭제</button>
 				<form id="recFrm" action="/rest/addRecMenusProc" enctype="multipart/form-data" method="post">
 					<div><button type="button" onclick="addRecMenu()">메뉴 추가</button></div>
 					<input type="hidden" name="i_rest" value="${data.i_rest}">
@@ -147,7 +147,7 @@
 	
 		function isDel() {
 			if(confirm('삭제 하시겠습니까?')) {
-				location.href = '/rest/restDel?i_rest=${data.i_rest}'
+				location.href = '/rest/del?i_rest=${data.i_rest}'
 			}
 		}
 	</script>

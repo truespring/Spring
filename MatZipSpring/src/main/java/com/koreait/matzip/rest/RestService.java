@@ -4,13 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.google.gson.Gson;
 import com.koreait.matzip.model.CodeVO;
 import com.koreait.matzip.model.CommonMapper;
 import com.koreait.matzip.rest.model.RestDMI;
 import com.koreait.matzip.rest.model.RestPARAM;
-import com.koreait.matzip.rest.model.RestVO;
 
 @Service
 public class RestService {
@@ -38,5 +37,20 @@ public class RestService {
 	
 	public RestDMI selRest(RestPARAM param) {
 		return mapper.selRest(param);
+	}
+	
+	@Transactional // 자동으로 트랜잭션에 필요한 것들이 추가된다
+	public void delRestTran(RestPARAM param) {
+		mapper.delRestRecMenu(param);
+		mapper.delRestMenu(param);
+		mapper.delRest(param);
+	}
+	
+	public int delRestMenu(RestPARAM param) {
+		return mapper.delRestMenu(param);
+	}
+	
+	public int delRestRecMenu(RestPARAM param) {
+		return mapper.delRestRecMenu(param);
 	}
 }
