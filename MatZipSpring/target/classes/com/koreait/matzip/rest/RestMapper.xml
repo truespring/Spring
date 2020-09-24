@@ -37,11 +37,29 @@
 			ON A.i_rest = B.i_rest
 			AND B.i_user = #{i_user}
 		</if>
-		WHERE i_rest = #{i_rest}
+			WHERE A.i_rest = #{i_rest}
 		<if test="seq > 0">
 			AND A.seq = #{seq}
 		</if>
-		
+	</select>
+	
+	<select id="selRestMenus" parameterType="RestPARAM" resultType="RestRecMenuVO">
+		SELECT A.seq, A.menu_pic
+		FROM t_restaurant_menu A
+		<if test="i_user > 0">
+			INBER JOIN t_restaurant B
+			ON A.i_rest = #{i_rest}
+			AND B.i_user = #{i_user}
+		</if> 
+		WHERE i_rest = #{i_rest}
+		<if test="seq > 0">
+			and A.seq = #{seq}
+		</if> 
+	</select>
+	
+	<select id="selRestChkUser" parameterType="Integer" resultType="Integer">
+		SELECT i_user FROM t_restaurant
+		WHERE i_rest = #{i_rest}
 	</select>
 	
 	<insert id="insRest" parameterType="RestVO">
@@ -56,6 +74,14 @@
 		(i_rest, seq, menu_nm, menu_pic, menu_price)
 		SELECT #{i_rest}, ifnull(max(seq), 0) + 1, #{menu_nm}, #{menu_pic}, #{menu_price}
 		FROM t_restaurant_recommend_menu
+		WHERE i_rest = #{i_rest}
+	</insert>
+	
+	<insert id="insRestMenu" parameterType="RestRecMenuVO">
+		INSERT INTO t_restaurant_menu
+		(i_rest, seq, menu_pic)
+		SELECT #{i_rest}, ifnull(max(seq), 0) + 1, #{menu_pic}
+		FROM t_restaurant_menu
 		WHERE i_rest = #{i_rest}
 	</insert>
 	

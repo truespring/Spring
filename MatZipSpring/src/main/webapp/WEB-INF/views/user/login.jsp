@@ -4,7 +4,7 @@
 	<div>
 		<div class="msg">${data.msg}</div>
 		<form class="frm" method="post" action="/user/login">
-			<div><input type="text" name="user_id" placeholder="아이디" value="${data.user_id}"></div>
+			<div><input type="text" name="user_id" placeholder="아이디" value="${data.user_id}" autofocus></div>
 			<div><input type="password" name="user_pw" placeholder="비밀번호"></div>
 			<div><input type="submit" value="로그인"></div>
 		</form>
