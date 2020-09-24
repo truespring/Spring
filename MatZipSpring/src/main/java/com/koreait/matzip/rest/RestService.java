@@ -12,10 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.koreait.matzip.CommonUtils;
+import com.koreait.matzip.Const;
 import com.koreait.matzip.FileUtils;
+import com.koreait.matzip.SecurityUtils;
 import com.koreait.matzip.model.CodeVO;
 import com.koreait.matzip.model.CommonMapper;
 import com.koreait.matzip.rest.model.RestDMI;
+import com.koreait.matzip.rest.model.RestFile;
 import com.koreait.matzip.rest.model.RestPARAM;
 import com.koreait.matzip.rest.model.RestRecMenuVO;
 
@@ -37,6 +40,10 @@ public class RestService {
 		p.setI_m(1); // 음식적 카테고리 코드 = 1
 		
 		return cMapper.selCodeList(p);
+	}
+	
+	public List<RestRecMenuVO> selRestMenus(RestPARAM param) {
+		return mapper.selRestMenus(param);
 	}
 	
 	public int insRest(RestPARAM param) {
@@ -72,7 +79,7 @@ public class RestService {
 				File file = new File(realPath + item.getMenu_pic());
 				if(file.exists()) {
 					if(file.delete()) {
-						return mapper.delRecMenu(param);
+						return mapper.delRestRecMenu(param);
 					} else {
 						return 0;
 					}
@@ -86,14 +93,38 @@ public class RestService {
 		return mapper.selRestRecMenus(param);
 	}
 	
-	public int insRecMenus(MultipartHttpServletRequest mReq) {
+	public int insRestMenu(RestFile param, int i_user) {
+
+		System.out.println("Const.realPath : " + Const.realPath);
 		
+		String path = Const.realPath + "/resources/img/rest/" + param.getI_rest() + "/menu/";
+		
+		List<RestRecMenuVO> list = new ArrayList();
+		
+		for(MultipartFile mf : param.getMenu_pic()) {
+			RestRecMenuVO vo = new RestRecMenuVO();
+			list.add(vo);
+			
+			String saveFileNm = FileUtils.saveFile(path, mf);
+			vo.setMenu_pic(saveFileNm);
+			vo.setI_rest(param.getI_rest());
+		}
+		
+		for(RestRecMenuVO vo : list) {
+			mapper.insRestMenu(vo);
+		}
+		return Const.SUCCESS;
+	}
+	
+	public int insRecMenus(MultipartHttpServletRequest mReq) {
+		int i_user = SecurityUtils.getLoginUserPK(mReq.getSession());
 		int i_rest = Integer.parseInt(mReq.getParameter("i_rest"));
+		
 		List<MultipartFile> fileList = mReq.getFiles("menu_pic");
 		String[] menuNmArr = mReq.getParameterValues("menu_nm");
 		String[] menuPriceArr = mReq.getParameterValues("menu_price");
 		
-		String path = mReq.getServletContext().getRealPath("/resources/img/rest/" + i_rest + "/rec_menu/");
+		String path = Const.realPath + "/resources/img/rest/" + i_rest + "/rec_menu/";
 		
 		List<RestRecMenuVO> list = new ArrayList();
 		// 저장 위치
@@ -127,5 +158,4 @@ public class RestService {
 		
 		return i_rest;
 	}
-	
 }

@@ -41,6 +41,11 @@
 										<c:forEach var="i" begin="0" end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
 											<div class="menuItem">
 												<img src="/res/img/rest/${data.i_rest}/menu/${menuList[i].menu_pic}">
+												<c:if test="${loginUser.i_user == data.i_user}">
+													<div class="delIconContainer" onclick="delMenu(${menuList[i].seq})">
+														<span class="material-icons">clear</span>
+													</div>
+												</c:if>
 											</div>
 										</c:forEach>
 										<c:if test="${fn:length(menuList) > 3}">
@@ -71,7 +76,7 @@
 			</div>
 			<h2>--메뉴--</h2>
 			<div>
-				<form id="menuFrm" action="/rest/addMenus" enctype="multipart/form-data" method="post">
+				<form id="menuFrm" action="/rest/menus" enctype="multipart/form-data" method="post">
 					<input type="hidden" name="i_rest" value="${data.i_rest}">
 					<input type="file" name="menu_pic" multiple>
 					<div><input type='submit' value="등록"></div>
@@ -101,13 +106,12 @@
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
-		function delRecMenu(i_rest, seq) {
-			console.log(i_rest)
+		function delRecMenu(seq) {
 			console.log(seq)
 			if(!confirm('삭제하시겠습니까?')) {
 				return
 			}
-			console.log('seq : ' seq)
+			console.log('seq : ' + seq)
 			
 			axios.get('/rest/ajaxDelRecMenu', {
 				params: {
@@ -126,6 +130,7 @@
 		var idx = 0;
 		function addRecMenu() {
 			var div = document.createElement('div')
+			div.setAttribute('id', 'recMenu_' + idx++)
 			
 			var inputNm = document.createElement('input')
 			inputNm.setAttribute("type", "text")
@@ -136,6 +141,12 @@
 			var inputpic = document.createElement('input')
 			inputpic.setAttribute("type", "file")
 			inputpic.setAttribute('name', 'menu_pic')
+			var delBtn = document.createElement('input')
+			delBtn.setAttribute('type', 'button')
+			delBtn.setAttribute('value', 'X')
+			delBtn.addEventListener('click', function() {
+				div.remove()
+			})
 			
 			div.append('메뉴 : ')
 			div.append(inputNm)
@@ -143,6 +154,7 @@
 			div.append(inputPrice)
 			div.append(' 사진 : ')
 			div.append(inputpic)
+			div.append(delBtn)
 			
 			recItem.append(div)
 		}

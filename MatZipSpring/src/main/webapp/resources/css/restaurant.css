@@ -47,6 +47,13 @@
 	width: 70px;
 	height: 70px;
 	color: white;
+	position: relative;
+}
+
+.menuList .menuItem .delIconContainer .material-icons {
+	position: absolute;
+	cursor: pointer;
+	color: black;
 }
 
 .menuList .menuItem:not(:first-child) {
