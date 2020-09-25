@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,8 +19,8 @@ import com.koreait.matzip.SecurityUtils;
 import com.koreait.matzip.ViewRef;
 import com.koreait.matzip.rest.model.RestDMI;
 import com.koreait.matzip.rest.model.RestFile;
-import com.koreait.matzip.rest.model.RestMenuVO;
 import com.koreait.matzip.rest.model.RestPARAM;
+import com.koreait.matzip.rest.model.RestRecMenuVO;
 
 @Controller
 @RequestMapping("/rest")
@@ -70,7 +69,7 @@ public class RestController {
 		model.addAttribute(Const.VIEW, "rest/restDetail");
 		model.addAttribute("css", new String[] {"restaurant"});
 		model.addAttribute("data", data);
-		model.addAttribute("menuList", service.selRestMenus(param));
+//		model.addAttribute("menuList", service.selRestMenus(param));
 		model.addAttribute("recMenuList", service.selRestRecMenus(param));
 		return ViewRef.TEMP_MENU_TEMP;
 	}
@@ -102,7 +101,18 @@ public class RestController {
 		String path = "/resources/img/rest/" + param.getI_rest() + "/rec_menu/";
 		String realPath = hs.getServletContext().getRealPath(path);
 		param.setI_user(SecurityUtils.getLoginUserPK(hs));
-		return service.delRecMenu(param, realPath);
+		return service.delRestRecMenu(param, realPath);
+	}
+	
+	@RequestMapping("/ajaxDelMenu")
+	@ResponseBody public int ajaxDelMenu(RestPARAM param) { // i_rest, seq, menu_pic 을 보냄
+		return service.delRestMenu(param);
+	}
+	
+	@RequestMapping("/ajaxSelMenuList")
+	@ResponseBody
+	public List<RestRecMenuVO> ajaxSelMenuLists(RestPARAM param	) {
+		return service.selRestMenus(param);
 	}
 	
 	@RequestMapping("/menus")
