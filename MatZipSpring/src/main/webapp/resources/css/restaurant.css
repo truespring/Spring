@@ -2,6 +2,7 @@
 
 
 .recMenuContainer {
+	z-index: 20;
 	width: 100%;
 	height: 260px;
 	overflow-x: scroll;
@@ -75,4 +76,54 @@
 
 .restaurant-detail {
 	padding: 5px 0 10px 0;
+}
+
+#carouselContainer {
+	transition: 0.5s;
+	opacity: 0;
+	z-index: -10;
+	left: 0;
+	top: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: #000A;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+
+#carouselContainer #imgContainer {
+	background-color: #fff;
+	width: 60%;
+	height: 80%;
+	position: relative;
+}
+
+#carouselContainer .material-icons {
+	display: inline-block;
+	position: absolute;
+	top: 40px;
+	right: 40px;
+	color: #fff;
+	cursor: pointer;
+	font-size: 3rem;
+}
+
+.swiper-container 
+.swiper-wrapper 
+.swiper-slide {
+	display: flex;
+    justify-content: center;
+    align-items: center;	
+}    
+
+.swiper-container 
+.swiper-wrapper 
+.swiper-slide
+img {
+	width: 100%;
+	overflow: hidden;
 }
