@@ -36,26 +36,7 @@
 						<tr>
 							<th>메뉴</th>
 							<td>	
-								<div class="menuList">
-									<c:if test="${fn:length(menuList) > 0}">
-										<c:forEach var="i" begin="0" end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
-											<div class="menuItem">
-												<img src="/res/img/rest/${data.i_rest}/menu/${menuList[i].menu_pic}">
-												<c:if test="${loginUser.i_user == data.i_user}">
-													<div class="delIconContainer" onclick="delMenu(${menuList[i].seq})">
-														<span class="material-icons">clear</span>
-													</div>
-												</c:if>
-											</div>
-										</c:forEach>
-										<c:if test="${fn:length(menuList) > 3}">
-											<div class="menuItem bg_black">
-												<div class="moreCnt">
-													+${fn:length(menuList) - 3}
-												</div>
-											</div>
-										</c:if>
-									</c:if>
+								<div class="menuList" id="conMenuList">
 								</div>
 							</td>	
 						</tr>
@@ -106,64 +87,128 @@
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script>
-		function delRecMenu(seq) {
-			console.log(seq)
-			if(!confirm('삭제하시겠습니까?')) {
-				return
+	
+	var menuList = []
+	function ajaxSelMenuList() {
+		axios.get('/rest/ajaxSelMenuList', {
+			params: {
+				i_rest: ${data.i_rest}
 			}
-			console.log('seq : ' + seq)
-			
-			axios.get('/rest/ajaxDelRecMenu', {
-				params: {
-					i_rest: ${data.i_rest},
-					seq: seq
-				}
-			}).then(function(res) {
-				if(res.data == 1) {
-					console.log(res.data)
-					var ele = document.querySelector('#recMenuItem_' + seq)
-					ele.remove()
+		}).then(function(res) {
+			menuList = res.data
+			refreshMenu()
+		})
+	}
+	
+	function refreshMenu() {
+		conMenuList.innerHTML = ''
+		menuList.forEach(function(item, idx) {
+			makeMenuItem(item, idx)
+		})
+	}
+	
+	function makeMenuItem(item, idx) {
+		const div = document.createElement('div')
+		div.setAttribute('class', 'menuItem')
+		
+		const img = document.createElement('img')
+		img.setAttribute('src', `/res/img/rest/${data.i_rest}/menu/\${item.menu_pic}`)
+		
+		div.append(img)
+		
+		<c:if test="${loginUser.i_user == data.i_user}">
+			const delDiv = document.createElement('div')
+			delDiv.setAttribute('class', 'delIconContainer')
+			delDiv.addEventListener('click', function() {
+				if(idx > -1) {
+					// 서버 삭제 요청
+					axios.get('/rest/ajaxDelMenu', {
+						params: {
+							i_rest: ${data.i_rest},
+							seq: item.seq,
+							menu_pic: item.menu_pic
+						}
+					}).then(function(res) {
+						if(res.data == 1) {
+							menuList.splice(idx, 1)
+							refreshMenu()
+						} else {
+							alert('메뉴를 삭제할 수 없습니다.')
+						}
+					})
 				}
 			})
-		}
-	
-		var idx = 0;
-		function addRecMenu() {
-			var div = document.createElement('div')
-			div.setAttribute('id', 'recMenu_' + idx++)
 			
-			var inputNm = document.createElement('input')
-			inputNm.setAttribute("type", "text")
-			inputNm.setAttribute('name', 'menu_nm')
-			var inputPrice = document.createElement('input')
-			inputPrice.setAttribute("type", "number")
-			inputPrice.setAttribute('name', 'menu_price')
-			var inputpic = document.createElement('input')
-			inputpic.setAttribute("type", "file")
-			inputpic.setAttribute('name', 'menu_pic')
-			var delBtn = document.createElement('input')
-			delBtn.setAttribute('type', 'button')
-			delBtn.setAttribute('value', 'X')
-			delBtn.addEventListener('click', function() {
-				div.remove()
-			})
+			const span = document.createElement('span')
+			span.setAttribute('class', 'material-icons')
+			span.innerText = 'clear'
 			
-			div.append('메뉴 : ')
-			div.append(inputNm)
-			div.append(' 가격 : ')
-			div.append(inputPrice)
-			div.append(' 사진 : ')
-			div.append(inputpic)
-			div.append(delBtn)
+			delDiv.append(span)
+			div.append(delDiv)
+		</c:if>
 			
-			recItem.append(div)
-		}
-		addRecMenu() // 함수를 만들자마자 호출
-	
-		function isDel() {
-			if(confirm('삭제 하시겠습니까?')) {
-				location.href = '/rest/del?i_rest=${data.i_rest}'
+		conMenuList.append(div)
+	}
+	function delRecMenu(seq) {
+		if(!confirm('삭제하시겠습니까?')) {
+			return
+		}	
+		console.log('seq : ' + seq)
+		
+		axios.get('/rest/ajaxDelRecMenu', {
+			params: {
+				i_rest: ${data.i_rest},
+				seq: seq
 			}
+		}).then(function(res) {
+			console.log(res)
+			if(res.data == 1) {
+				//엘리먼트 삭제
+				var ele = document.querySelector('#recMenuItem_' + seq)
+				ele.remove()
+			}
+		})
+	}
+	<c:if test="${loginUser.i_user == data.i_user}">
+	var idx = 0;
+	function addRecMenu() {
+		var div = document.createElement('div')
+		div.setAttribute('id', 'recMenu_' + idx++)
+		
+		var inputNm = document.createElement('input')
+		inputNm.setAttribute('type', 'text')
+		inputNm.setAttribute('name', 'menu_nm')
+		var inputPrice = document.createElement('input')
+		inputPrice.setAttribute('type', 'number')
+		inputPrice.setAttribute('name', 'menu_price')
+		inputPrice.value = '0'
+		var inputPic = document.createElement('input')
+		inputPic.setAttribute('type', 'file')
+		inputPic.setAttribute('name', 'menu_pic')
+		var delBtn = document.createElement('input')
+		delBtn.setAttribute('type', 'button')
+		delBtn.setAttribute('value', 'X')		
+		delBtn.addEventListener('click', function() {
+			div.remove()
+		})		
+		div.append('메뉴: ')
+		div.append(inputNm)
+		div.append(' 가격: ')
+		div.append(inputPrice)
+		div.append(' 사진: ')
+		div.append(inputPic)
+		div.append(delBtn)
+		
+		recItem.append(div)
+	}
+	function isDel() {
+		if(confirm('삭제 하시겠습니까?')) {
+			location.href = '/rest/del?i_rest=${data.i_rest}'
 		}
+	}
+	addRecMenu()
+	
+	</c:if>
+	ajaxSelMenuList()
 	</script>
 </div>
