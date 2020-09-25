@@ -67,7 +67,7 @@ public class RestController {
 //		List<RestRecMenuVO> selRestRecMenus = service.selRestRecMenus(param);
 		model.addAttribute(Const.TITLE, data.getNm());
 		model.addAttribute(Const.VIEW, "rest/restDetail");
-		model.addAttribute("css", new String[] {"restaurant"});
+		model.addAttribute("css", new String[] {"restaurant", "swiper-bundle.min"});
 		model.addAttribute("data", data);
 //		model.addAttribute("menuList", service.selRestMenus(param));
 		model.addAttribute("recMenuList", service.selRestRecMenus(param));
