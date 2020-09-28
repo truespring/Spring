@@ -2,6 +2,24 @@ package com.koreait.matzip.user.model;
 
 public class UserPARAM extends UserVO {
 	private String msg;
+	private String proc_type;
+	private int i_rest;
+
+	public int getI_rest() {
+		return i_rest;
+	}
+
+	public void setI_rest(int i_rest) {
+		this.i_rest = i_rest;
+	}
+
+	public String getProc_type() {
+		return proc_type;
+	}
+
+	public void setProc_type(String proc_type) {
+		this.proc_type = proc_type;
+	}
 
 	public String getMsg() {
 		return msg;

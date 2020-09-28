@@ -30,7 +30,7 @@ public class RestInterceptor extends HandlerInterceptorAdapter {
 					return false;
 				}
 
-				int i_user = SecurityUtils.getLoginUserPK(request); // 로그인 한 사람의 정보
+				int i_user = SecurityUtils.getLoginUserPk(request); // 로그인 한 사람의 정보
 
 				boolean result = _authSuccess(i_rest, i_user); // 식당을 등록한 사람과 로그인 사람이 동일인인지 체크(true = 동일인)
 				System.out.println("=== auth result : " + result);

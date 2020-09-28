@@ -9,5 +9,8 @@ import com.koreait.matzip.user.model.UserVO;
 @Mapper // xml 파일과 같이 DAO를 만들게 된다
 public interface UserMapper {
 	public int insUser(UserVO p);
+	int insFavorite(UserPARAM param);
+
 	public UserDMI selUser(UserPARAM p);
+	int delFavorite(UserPARAM param);
 }

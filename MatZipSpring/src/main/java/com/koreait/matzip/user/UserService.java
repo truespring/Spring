@@ -48,4 +48,14 @@ public class UserService {
 		// 파람에는 아이디, 암호화된 비밀번호, 솔트, 이름이 담겨있다
 		return mapper.insUser(param);
 	}
+	
+	public int ajaxToggleFavorite(UserPARAM param) {
+		switch(param.getProc_type()) {
+		case "ins":
+			return mapper.insFavorite(param);
+		case "del":
+			return mapper.delFavorite(param);
+		}
+		return 0;
+	}
 }

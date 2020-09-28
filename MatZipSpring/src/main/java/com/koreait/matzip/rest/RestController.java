@@ -2,6 +2,7 @@ package com.koreait.matzip.rest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,23 +47,31 @@ public class RestController {
 	
 	@RequestMapping(value = "/restReg", method = RequestMethod.POST)
 	public String restReg(RestPARAM param, HttpSession hs) {		
-		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		param.setI_user(SecurityUtils.getLoginUserPk(hs));
 		int result = service.insRest(param);
 		
 		return "redirect:/";
 	}	
 	
 	@RequestMapping(value = "/ajaxGetList", produces = {"application/json; charset=UTF-8"})
-	@ResponseBody public List<RestDMI> ajaxGetList(RestPARAM param) {
+	@ResponseBody public List<RestDMI> ajaxGetList(RestPARAM param, HttpSession hs) {
 		System.out.println("sw_lat : " + param.getSw_lat());
 		System.out.println("sw_lng : " + param.getSw_lng());
 		System.out.println("ne_lat : " + param.getNe_lat());
 		System.out.println("ne_lng : " + param.getNe_lng());
+		
+		int i_user = SecurityUtils.getLoginUserPk(hs);
+		param.setI_user(i_user);
+		
 		return service.selRestList(param);
 	}
 	
 	@RequestMapping(value = "/detail")
-	public String detail(RestPARAM param, Model model) {
+	public String detail(RestPARAM param, Model model, HttpServletRequest req) {
+		service.addHits(param, req);
+		int i_user = SecurityUtils.getLoginUserPk(req);
+		param.setI_user(i_user);
+		
 		RestDMI data = service.selRest(param);
 //		List<RestRecMenuVO> selRestRecMenus = service.selRestRecMenus(param);
 		model.addAttribute(Const.TITLE, data.getNm());
@@ -74,9 +83,10 @@ public class RestController {
 		return ViewRef.TEMP_MENU_TEMP;
 	}
 	
+	
 	@RequestMapping(value = "/del")
 	public String del(RestPARAM param, HttpSession hs, Model model) {
-		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		param.setI_user(SecurityUtils.getLoginUserPk(hs));
 		int result = 1;
 		try { // 트라이 캐치문이 없다면 쿼리문이 노출될 수 있다.
 			service.delRestTran(param);
@@ -100,7 +110,7 @@ public class RestController {
 	@ResponseBody public int ajaxDelRecMenu(RestPARAM param, HttpSession hs) {
 		String path = "/resources/img/rest/" + param.getI_rest() + "/rec_menu/";
 		String realPath = hs.getServletContext().getRealPath(path);
-		param.setI_user(SecurityUtils.getLoginUserPK(hs));
+		param.setI_user(SecurityUtils.getLoginUserPk(hs));
 		return service.delRestRecMenu(param, realPath);
 	}
 	
@@ -117,7 +127,7 @@ public class RestController {
 	
 	@RequestMapping("/menus")
 	public String menus(@ModelAttribute RestFile param, HttpSession hs, RedirectAttributes ra) {
-		int i_user = SecurityUtils.getLoginUserPK(hs);
+		int i_user = SecurityUtils.getLoginUserPk(hs);
 		int result = service.insRestMenu(param, i_user);
 		ra.addAttribute("i_rest", param.getI_rest());
 		
