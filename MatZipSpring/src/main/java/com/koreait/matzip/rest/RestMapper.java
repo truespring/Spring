@@ -21,6 +21,8 @@ public interface RestMapper {
 	int insRestMenu(RestRecMenuVO param);
 	int insRestRecMenu(RestRecMenuVO param);
 	
+	int updAddHits(RestPARAM param);
+	
 	int delRest(RestPARAM param);
 	int delRestMenu(RestPARAM param);
 	int delRestRecMenu(RestPARAM param);
