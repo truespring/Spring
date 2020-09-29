@@ -43,7 +43,7 @@
 				<c:if test="${loginUser == null}">
 			 		<a class="ml15" href="#" onclick="alert('로그인이 필요합니다.')"><span class="material-icons" id="icon">add_circle_outline</span></a>
 			 	</c:if>
-			 	<a class="ml15 mr15" href="/user/restFavorite"><span class="material-icons" id="icon">favorite</span></a>
+			 	<a class="ml15 mr15" href="/user/favorite"><span class="material-icons" id="icon">favorite</span></a>
 			</div>
 		</header>
 		<section>
