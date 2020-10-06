@@ -16,9 +16,18 @@ a {
 	text-decoration: none;
 }
 
+.font-NotoSans-500 {
+	font-family: 'Noto Sans KR';
+	font-weight: 500;
+}
+
 .ml5 { margin-left: 5px; }
 .ml10 { margin-left: 10px; }
 .ml15 { margin-left: 15px; }
+
+.bg_black {
+	background-color: #000;
+}
 
 #container {
 	display: flex;
@@ -54,16 +63,10 @@ a {
 
 #container > header > #headerRight > a {
 	font-weight: bold;
-}
-
-#icon {
-	font-size: 2em;
+	font-size: 1.4em;
 }
 
 #container > section {
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	flex-grow: 1;
 }
 
@@ -94,8 +97,8 @@ a {
 
  .containerPImg {
 	display: inline-block;	
-	width: 50px;
-	height: 50px;
+	width: 30px;
+	height: 30px;
     border-radius: 50%;
     overflow: hidden;
 }
@@ -103,8 +106,4 @@ a {
 .pImg {
 	object-fit: cover;
 	height: 100%;
-	width: 100%;
-}
-.bg_black {
-	background-color: #000;
-}
+	width: 100%
