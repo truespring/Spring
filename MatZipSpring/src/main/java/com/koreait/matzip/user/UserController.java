@@ -24,6 +24,7 @@ public class UserController {
 	
 	@Autowired // 자동으로 주소값을 넣어줄 때 사용
 	private UserService service;
+	
 	/*
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(Model model) {
@@ -107,10 +108,15 @@ public class UserController {
 		return service.ajaxToggleFavorite(param);
 	}
 	
-	@RequestMapping(value = "/favorite")
-	public String favorite(Model model) {
-		model.addAttribute(Const.CSS, new String[] {"userFavorite"});
-		model.addAttribute(Const.TITLE, "찜 리스트");
+	@RequestMapping("/favorite")
+	public String favorite(Model model, HttpSession hs) {
+		int i_user = SecurityUtils.getLoginUserPk(hs);
+		UserPARAM param = new UserPARAM();
+		param.setI_user(i_user);
+		
+		model.addAttribute("data", service.selFavoriteList(param));
+		model.addAttribute(Const.CSS, new String[]{"userFavorite"});
+		model.addAttribute(Const.TITLE, "찜");
 		model.addAttribute(Const.VIEW, "user/favorite");
 		return ViewRef.TEMP_MENU_TEMP;
 	}
