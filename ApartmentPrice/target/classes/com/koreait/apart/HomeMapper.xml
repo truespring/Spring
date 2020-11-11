@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.koreait.apart.HomeMapper">
+	<select id="selLocationCodeList" resultType="LocationCodeVO">
+		SELECT * FROM location_code
+	</select>
+	
+	<select id="selApartmentInfoList" parameterType="SearchParam" resultType="ApartInfoVO">
+		SELECT * FROM apartment_info
+		WHERE deal_year = #{year} 
+		AND deal_month = #{mon}
+		AND location_cd = ${locationCd}
+	</select>
+	
+	<insert id="insApartmentInfo" parameterType="ItemDTO">
+		INSERT INTO apartment_info
+		(deal_amount, build_year, deal_year, deal_month, deal_day, dong, apartment_name, area_for_exclusive_use, jibun, flr, location_cd)
+		VALUES
+		(${deal_amount}, #{build_year}, #{deal_year}, #{deal_month}, #{deal_day}, #{dong}, #{apartment_name}, #{area_for_exclusive_use}, #{jibun}, #{flr}, #{location_cd})
+	</insert>
+</mapper>
